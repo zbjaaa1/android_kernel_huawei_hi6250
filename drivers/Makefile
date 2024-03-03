@@ -187,7 +187,6 @@ obj-$(CONFIG_IMAGINATION_D5500_VCODEC)  += vcodec/imagination/D5500/
 obj-$(CONFIG_HISILICON_PLATFORM)+= hisi/
 obj-$(CONFIG_HUAWEI_PLATFORM) += huawei_platform/
 obj-$(CONFIG_HUAWEI_DSM)        += dsm/
-obj-$(CONFIG_HUAWEI_WPA_DMD) += wpa_dmd/
 obj-$(CONFIG_CONNECTIVITY_HI110X) += connectivity/
 obj-$(CONFIG_LOGGER_EXTEND) += log/
 obj-$(CONFIG_CONTEXTHUB)        += contexthub/
