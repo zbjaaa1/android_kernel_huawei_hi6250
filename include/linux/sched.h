@@ -1654,10 +1654,6 @@ struct ravg {
 	u32 load_sum_history[RAVG_HIST_SIZE_MAX];
 	u32 prev_load, curr_load;
 #endif
-#ifdef CONFIG_HISI_RTG
-	u64 curr_window_load, prev_window_load;
-	u64 curr_window_exec, prev_window_exec;
-#endif
 };
 #endif
 
@@ -1928,11 +1924,6 @@ struct task_struct {
 #ifdef CONFIG_HISI_CORE_CTRL
 	int heavy_task;
 #endif
-#ifdef CONFIG_HISI_RTG
-	struct related_thread_group *grp;
-	struct list_head grp_list;
-#endif
-
 #ifdef CONFIG_CGROUP_SCHED
 	struct task_group *sched_task_group;
 #endif
