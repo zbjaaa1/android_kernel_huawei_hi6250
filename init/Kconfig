@@ -1451,14 +1451,6 @@ config HISI_MIGRATION_NOTIFY
 	help
 	  tasks migration notify frequency change.
 
-config HISI_CGROUP_RTG
-	bool "Hisilicon related threads group"
-	depends on HISI_RTG
-	depends on SCHED_TUNE
-	default n
-	help
-	  set schedtune group tasks into a rtg.
-
 config SCHED_AUTOGROUP
 	bool "Automatic process group scheduling"
 	select CGROUPS
