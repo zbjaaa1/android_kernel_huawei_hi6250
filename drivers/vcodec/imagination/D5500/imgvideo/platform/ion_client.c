@@ -9,6 +9,8 @@
 #include <linux/hisi/hisi_ion.h>
 #include <linux/version.h>
 
+#include "sysmem_utils.h"
+
 static struct ion_client *ion_client = NULL;
 
 extern IMG_VOID *VDECKM_GetNativeDevice(void);

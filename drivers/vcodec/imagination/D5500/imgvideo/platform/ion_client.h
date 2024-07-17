@@ -47,7 +47,6 @@
 #define __ION_CLIENT_H
 
 #include <linux/syscalls.h>
-#include "sysmem_utils.h"
 
 /*
  * gcc preprocessor defines "linux" as "1".
