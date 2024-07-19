@@ -296,10 +296,6 @@
 #include <network_aware/network_aware.h>
 #endif
 
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-#include <huawei_platform/emcom/smartcare/network_measurement/nm.h>
-#endif /* CONFIG_HW_NETWORK_MEASUREMENT */
-
 #ifdef CONFIG_HUAWEI_XENGINE
 #include <huawei_platform/emcom/emcom_xengine.h>
 #endif
@@ -1504,26 +1500,15 @@ new_segment:
 
 		/* Where to copy to? */
 		if (skb_availroom(skb) > 0) {
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-			int old_len = skb->len;
-#endif /* CONFIG_HW_NETWORK_MEASUREMENT */
 			/* We have some space in skb head. Superb! */
 			copy = min_t(int, copy, skb_availroom(skb));
 			err = skb_add_data_nocache(sk, skb, &msg->msg_iter, copy);
 			if (err)
 				goto do_fault;
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-			if (unlikely(nm_sample_on(sk)))
-				nm_nse(sk, skb, old_len, skb->len - old_len,
-					NM_TCP, NM_UPLINK, NM_FUNC_HTTP);
-#endif /* CONFIG_HW_NETWORK_MEASUREMENT */
 		} else {
 			bool merge = true;
 			int i = skb_shinfo(skb)->nr_frags;
 			struct page_frag *pfrag = sk_page_frag(sk);
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-			int old_len;
-#endif /* CONFIG_HW_NETWORK_MEASUREMENT */
 
 			if (!sk_page_frag_refill(sk, pfrag))
 				goto wait_for_memory;
@@ -1542,20 +1527,12 @@ new_segment:
 			if (!sk_wmem_schedule(sk, copy))
 				goto wait_for_memory;
 
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-			old_len = skb->len;
-#endif /* CONFIG_HW_NETWORK_MEASUREMENT */
 			err = skb_copy_to_page_nocache(sk, &msg->msg_iter, skb,
 						       pfrag->page,
 						       pfrag->offset,
 						       copy);
 			if (err)
 				goto do_error;
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-			if (unlikely(nm_sample_on(sk)))
-				nm_nse(sk, skb, old_len, skb->len - old_len,
-					NM_TCP, NM_UPLINK, NM_FUNC_HTTP);
-#endif /* CONFIG_HW_NETWORK_MEASUREMENT */
 
 			/* Update the skb. */
 			if (merge) {
@@ -2217,10 +2194,6 @@ do_prequeue:
 					copied = -EFAULT;
 				break;
 			}
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-			if (unlikely(nm_sample_on(sk)))
-				nm_nse(sk, skb, offset, used, NM_TCP, NM_DOWNLINK, NM_FUNC_HTTP);
-#endif /* CONFIG_HW_NETWORK_MEASUREMENT */
 		}
 
 		*seq += used;

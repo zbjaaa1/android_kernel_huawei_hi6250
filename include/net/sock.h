@@ -71,10 +71,6 @@
 #include <net/tcp_states.h>
 #include <linux/net_tstamp.h>
 
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-#include <huawei_platform/emcom/smartcare/network_measurement/nm_types.h>
-#endif /* CONFIG_HW_NETWORK_MEASUREMENT */
-
 /*
  * This structure really needs to be cleaned up.
  * Most of it is for TCP, and not used by any of
@@ -476,14 +472,6 @@ struct sock {
 	void                    (*sk_destruct)(struct sock *sk);
 	struct sock_reuseport __rcu	*sk_reuseport_cb;
 	struct rcu_head		sk_rcu;
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-	unsigned int		sk_nm_uid;
-	struct tcp_statistics	*sk_tcp_statis;
-	union {
-		struct nm_http_entry	*sk_nm_http;
-		struct nm_dnsp_entry	*sk_nm_dnsp;
-	};
-#endif /* CONFIG_HW_NETWORK_MEASUREMENT */
 #ifdef CONFIG_HUAWEI_XENGINE
 	int			hicom_flag;
 	u8	snd_pkt_cnt;

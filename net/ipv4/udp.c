@@ -118,9 +118,6 @@
 #ifdef CONFIG_HUAWEI_XENGINE
 #include <huawei_platform/emcom/emcom_xengine.h>
 #endif
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-#include <huawei_platform/emcom/smartcare/network_measurement/nm.h>
-#endif /* CONFIG_HW_NETWORK_MEASUREMENT */
 
 #ifdef CONFIG_HW_HIDATA_HIMOS
 #include <huawei_platform/net/himos/hw_himos_udp_stats.h>
@@ -866,10 +863,6 @@ static int udp_send_skb(struct sk_buff *skb, struct flowi4 *fl4)
 		uh->check = CSUM_MANGLED_0;
 
 send:
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-	if (ntohs(uh->dest) == NM_DNS_PORT)
-		udp_measure_init(sk, skb);
-#endif /* CONFIG_HW_NETWORK_MEASUREMENT */
 	err = ip_send_skb(sock_net(sk), skb);
 	if (err) {
 		if (err == -ENOBUFS && !inet->recverr) {
@@ -1397,10 +1390,6 @@ try_again:
 #endif
 	}
 
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-	if (ntohs(udp_hdr(skb)->source) == NM_DNS_PORT && nm_sample_on(sk))
-		nm_nse(sk, skb, 0, 0, NM_DNS, NM_DOWNLINK, NM_FUNC_DNSP);
-#endif /* CONFIG_HW_NETWORK_MEASUREMENT */
 	sock_recv_ts_and_drops(msg, sk, skb);
 
 	/* Copy the address. */

@@ -48,9 +48,7 @@
 #include <linux/compiler.h>
 #include <linux/gfp.h>
 #include <linux/module.h>
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-#include <huawei_platform/emcom/smartcare/network_measurement/nm.h>
-#endif /* CONFIG_HW_NETWORK_MEASUREMENT */
+
 #ifdef CONFIG_HW_WIFIPRO
 #include <hwnet/ipv4/wifipro_tcp_monitor.h>
 #endif
@@ -1191,13 +1189,6 @@ static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb,
 
 	/* Our usage of tstamp should remain private */
 	skb->tstamp.tv64 = 0;
-
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-	if (unlikely(nm_sample_on(sk))) {
-		if (unlikely(!th->window))
-			update_snd_zero_win_cnts(sk);
-	}
-#endif /* CONFIG_HW_NETWORK_MEASUREMENT */
 
 	/* Cleanup our debris for IP stacks */
 	memset(skb->cb, 0, max(sizeof(struct inet_skb_parm),
@@ -3045,16 +3036,8 @@ int __tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb, int segs)
 		TCP_SKB_CB(skb)->sacked |= TCPCB_EVER_RETRANS;
 		/* Update global TCP statistics. */
 		TCP_ADD_STATS(sock_net(sk), TCP_MIB_RETRANSSEGS, segs);
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-		if (TCP_SKB_CB(skb)->tcp_flags & TCPHDR_SYN) {
-			__NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPSYNRETRANS);
-			if (unlikely(nm_sample_on(sk)))
-				update_syn_retrans(sk);
-		}
-#else
 		if (TCP_SKB_CB(skb)->tcp_flags & TCPHDR_SYN)
 			__NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPSYNRETRANS);
-#endif
 		tp->total_retrans += segs;
 	}
 	return err;
@@ -3666,10 +3649,6 @@ static int tcp_send_syn_data(struct sock *sk, struct sk_buff *syn)
 	tcp_connect_queue_skb(sk, syn_data);
 
 	err = tcp_transmit_skb(sk, syn_data, 1, sk->sk_allocation);
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-	if (unlikely(nm_sample_on(sk)))
-		nm_nse(sk, syn_data, 0, syn_data->len, NM_TCP, NM_UPLINK, NM_FUNC_HTTP);
-#endif /* CONFIG_HW_NETWORK_MEASUREMENT */
 
 	syn->skb_mstamp = syn_data->skb_mstamp;
 
@@ -3730,10 +3709,6 @@ int tcp_connect(struct sock *sk)
 	tp->retrans_stamp = tcp_time_stamp;
 	tcp_connect_queue_skb(sk, buff);
 	tcp_ecn_send_syn(sk, buff);
-
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-	tcp_measure_init(sk);
-#endif /* CONFIG_HW_NETWORK_MEASUREMENT */
 
 	/* Send off SYN; include data in Fast Open. */
 	err = tp->fastopen_req ? tcp_send_syn_data(sk, buff) :

@@ -33,10 +33,6 @@
 #include <huawei_platform/net/qtaguid_pid/qtaguid_pid.h>
 #endif
 
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-#include <huawei_platform/emcom/smartcare/network_measurement/nm.h>
-#endif /* CONFIG_HW_NETWORK_MEASUREMENT */
-
 #ifdef INET_CSK_DEBUG
 const char inet_csk_timer_bug_msg[] = "inet_csk BUG: unknown timer value\n";
 EXPORT_SYMBOL(inet_csk_timer_bug_msg);
@@ -735,10 +731,6 @@ void inet_csk_destroy_sock(struct sock *sk)
 	argo_deinit(sk);
 #endif /* CONFIG_TCP_ARGO */
 
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-	if (atomic_read(&sk->sk_refcnt) == 1)
-		tcp_measure_deinit(sk);
-#endif /* CONFIG_HW_NETWORK_MEASUREMENT */
 	sk->sk_prot->destroy(sk);
 
 	sk_stream_kill_queues(sk);

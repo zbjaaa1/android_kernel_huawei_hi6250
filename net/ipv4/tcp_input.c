@@ -80,10 +80,6 @@
 #include <huawei_platform/emcom/emcom_xengine.h>
 #endif
 
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-#include <huawei_platform/emcom/smartcare/network_measurement/nm.h>
-#endif /* CONFIG_HW_NETWORK_MEASUREMENT */
-
 #ifdef CONFIG_HW_WIFIPRO
 #include <hwnet/ipv4/wifipro_tcp_monitor.h>
 #endif
@@ -2186,11 +2182,6 @@ void tcp_enter_loss(struct sock *sk)
 	}
 	tcp_clear_all_retrans_hints(tp);
 
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-	if (unlikely(nm_sample_on(sk)))
-		update_ul_timeout_retrans(sk);
-#endif
-
 	tcp_for_write_queue(skb, sk) {
 		if (skb == tcp_send_head(sk))
 			break;
@@ -2938,10 +2929,6 @@ static void tcp_enter_recovery(struct sock *sk, bool ece_ack)
 			tp->prior_ssthresh = tcp_current_ssthresh(sk);
 		tcp_init_cwnd_reduction(sk);
 	}
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-	if (unlikely(nm_sample_on(sk)))
-		update_ul_fast_retrans(sk);
-#endif
 	tcp_set_ca_state(sk, TCP_CA_Recovery);
 }
 
@@ -3200,10 +3187,6 @@ static inline bool tcp_ack_update_rtt(struct sock *sk, const int flag,
 	if (seq_rtt_us < 0)
 		return false;
 
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-	if (unlikely(nm_sample_on(sk)))
-		set_syn_rtt(sk, seq_rtt_us);
-#endif
 #ifdef CONFIG_HUAWEI_NWEVAL
 	nweval_update_rtt(sk, seq_rtt_us);
 #endif
@@ -3679,11 +3662,6 @@ static int tcp_ack_update_window(struct sock *sk, const struct sk_buff *skb, u32
 
 	if (likely(!tcp_hdr(skb)->syn))
 		nwin <<= tp->rx_opt.snd_wscale;
-
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-	if (unlikely(nm_sample_on(sk) && !nwin))
-		update_rcv_zero_win_cnts(sk);
-#endif
 
 	if (tcp_may_update_window(tp, ack, ack_seq, nwin)) {
 		flag |= FLAG_WIN_UPDATE;
@@ -5111,10 +5089,6 @@ static void tcp_data_queue(struct sock *sk, struct sk_buff *skb)
 			__set_current_state(TASK_RUNNING);
 
 			if (!skb_copy_datagram_msg(skb, 0, tp->ucopy.msg, chunk)) {
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-				if (unlikely(nm_sample_on(sk)))
-					nm_nse(sk, skb, 0, chunk, NM_TCP, NM_DOWNLINK, NM_FUNC_HTTP);
-#endif /* CONFIG_HW_NETWORK_MEASUREMENT */
 				tp->ucopy.len -= chunk;
 				tp->copied_seq += chunk;
 				eaten = (chunk == skb->len);
@@ -5785,10 +5759,6 @@ static int tcp_copy_to_iovec(struct sock *sk, struct sk_buff *skb, int hlen)
 		tp->ucopy.len -= chunk;
 		tp->copied_seq += chunk;
 		tcp_rcv_space_adjust(sk);
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-		if (unlikely(nm_sample_on(sk)))
-			nm_nse(sk, skb, hlen, chunk, NM_TCP, NM_DOWNLINK, NM_FUNC_HTTP);
-#endif /* CONFIG_HW_NETWORK_MEASUREMENT */
 	}
 
 	return err;

@@ -1113,10 +1113,6 @@ static int mptcp_alloc_mpcb(struct sock *meta_sk, __u64 remote_key,
 	master_sk->bastet = NULL;
 	master_sk->reconn = NULL;
 #endif
-#ifdef CONFIG_HW_NETWORK_MEASUREMENT
-	master_sk->sk_tcp_statis = NULL;
-	master_sk->sk_nm_http = NULL;
-#endif
 
 	master_tp = tcp_sk(master_sk);
 
