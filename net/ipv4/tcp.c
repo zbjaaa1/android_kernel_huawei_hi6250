@@ -1743,13 +1743,8 @@ void tcp_cleanup_rbuf(struct sock *sk, int copied)
 				time_to_ack = true;
 		}
 	}
-#ifdef CONFIG_TCP_ARGO
-	if (time_to_ack && tcp_argo_send_ack_immediatly(tp))
-		tcp_send_ack(sk);
-#else
 	if (time_to_ack)
 		tcp_send_ack(sk);
-#endif /* CONFIG_TCP_ARGO */
 }
 
 static void tcp_prequeue_process(struct sock *sk)

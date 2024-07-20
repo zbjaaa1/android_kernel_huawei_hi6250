@@ -24,9 +24,6 @@
 #include <net/inet_connection_sock.h>
 #include <net/inet_timewait_sock.h>
 #include <uapi/linux/tcp.h>
-#ifdef CONFIG_TCP_ARGO
-#include <huawei_platform/emcom/argo/tcp_argo.h>
-#endif /* CONFIG_TCP_ARGO */
 
 static inline struct tcphdr *tcp_hdr(const struct sk_buff *skb)
 {
@@ -461,11 +458,6 @@ struct tcp_sock {
 	 */
 	struct request_sock *fastopen_rsk;
 	u32	*saved_syn;
-
-#ifdef CONFIG_TCP_ARGO
-/* TCP ARGO */
-	struct tcp_argo *argo;
-#endif /* CONFIG_TCP_ARGO */
 
 #ifdef CONFIG_CHR_NETLINK_MODULE
 	u8 first_data_flag;

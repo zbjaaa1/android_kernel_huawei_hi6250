@@ -3784,12 +3784,6 @@ void tcp_send_delayed_ack(struct sock *sk)
 		 */
 		if (icsk->icsk_ack.blocked ||
 		    time_before_eq(icsk->icsk_ack.timeout, jiffies + (ato >> 2))) {
-#ifdef CONFIG_TCP_ARGO
-			if (tcp_sk(sk)->argo &&
-			    tcp_sk(sk)->argo->delay_ack_nums)
-				/* Delay ack failed, disable argo */
-				tcp_sk(sk)->argo->delay_ack_nums = 0;
-#endif /* CONFIG_TCP_ARGO */
 			tcp_send_ack(sk);
 			return;
 		}

@@ -5881,10 +5881,6 @@ void tcp_rcv_established(struct sock *sk, struct sk_buff *skb,
 			 const struct tcphdr *th, unsigned int len)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
-#ifdef CONFIG_TCP_ARGO
-	u32 seq;
-	u32 end_seq;
-#endif
 
 	if (unlikely(!sk->sk_rx_dst))
 		inet_csk(sk)->icsk_af_ops->sk_rx_dst_set(sk, skb);
@@ -5978,13 +5974,6 @@ void tcp_rcv_established(struct sock *sk, struct sk_buff *skb,
 			int eaten = 0;
 			bool fragstolen = false;
 
-#ifdef CONFIG_TCP_ARGO
-			if (tp->argo && tp->argo->delay_ack_nums == 1) {
-				argo_clear_hints(tp->argo);
-				tp->argo->delay_ack_nums = 1;
-			}
-#endif /* CONFIG_TCP_ARGO */
-
 #ifdef CONFIG_TCP_NODELAY
 			tcp_reset_nodelay(tp);
 #endif
@@ -6050,12 +6039,7 @@ void tcp_rcv_established(struct sock *sk, struct sk_buff *skb,
 					goto no_ack;
 			}
 
-#ifdef CONFIG_TCP_ARGO
-			if (argo_delay_acks_in_fastpath(sk,tp))
-				__tcp_ack_snd_check(sk, 0);
-#else
 			__tcp_ack_snd_check(sk, 0);
-#endif /* CONFIG_TCP_ARGO */
 no_ack:
 			if (eaten)
 				kfree_skb_partial(skb, fragstolen);
@@ -6078,10 +6062,6 @@ slow_path:
 	if (!tcp_validate_incoming(sk, skb, th, 1))
 		return;
 
-#ifdef CONFIG_TCP_ARGO
-	argo_calc_high_seq(sk, skb);
-#endif /* CONFIG_TCP_ARGO */
-
 step5:
 	if (tcp_ack(sk, skb, FLAG_SLOWPATH | FLAG_UPDATE_TS_RECENT) < 0)
 		goto discard;
@@ -6091,24 +6071,12 @@ step5:
 	/* Process urgent data. */
 	tcp_urg(sk, skb, th);
 
-#ifdef CONFIG_TCP_ARGO
-	seq = TCP_SKB_CB(skb)->seq;
-	end_seq = TCP_SKB_CB(skb)->end_seq;
-#endif
 	/* step 7: process the segment text */
 	tcp_data_queue(sk, skb);
 
 	tcp_data_snd_check(sk);
-#ifdef CONFIG_TCP_ARGO
-	argo_calc_delay_ack_nums(sk, seq, end_seq);
 
-	if (sysctl_tcp_argo && tp->argo && tp->argo->delay_ack_nums)
-		tcp_send_delayed_ack(sk);
-	else
-		tcp_ack_snd_check(sk);
-#else
 	tcp_ack_snd_check(sk);
-#endif /* CONFIG_TCP_ARGO */
 	return;
 
 csum_error:

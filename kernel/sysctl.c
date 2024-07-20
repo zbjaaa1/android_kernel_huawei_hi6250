@@ -1011,16 +1011,6 @@ static struct ctl_table kern_table[] = {
 		.extra2		= &two,
 	},
 #endif
-
-#ifdef CONFIG_TCP_ARGO
-	{
-		.procname	= "argo_log_mask",
-		.data		= &sysctl_argo_log_mask,
-		.maxlen		= sizeof(int),
-		.mode		= 0644,
-		.proc_handler	= proc_dointvec,
-	},
-#endif
 	{
 		.procname	= "ngroups_max",
 		.data		= &ngroups_max,

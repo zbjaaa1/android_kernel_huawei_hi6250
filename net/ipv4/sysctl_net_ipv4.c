@@ -720,15 +720,6 @@ static struct ctl_table ipv4_table[] = {
 		.proc_handler	= proc_dointvec_minmax,
 		.extra1		= &one
 	},
-#ifdef CONFIG_TCP_ARGO
-	{
-		.procname	= "tcp_argo",
-		.data		= &sysctl_tcp_argo,
-		.maxlen		= sizeof(sysctl_tcp_argo),
-		.mode		= 0644,
-		.proc_handler	= proc_dointvec,
-	},
-#endif /* CONFIG_TCP_ARGO */
 	{ }
 };
 

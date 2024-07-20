@@ -1939,9 +1939,6 @@ process:
 	th = (const struct tcphdr *)skb->data;
 	iph = ip_hdr(skb);
 
-#ifdef CONFIG_TCP_ARGO
-	argo_try_to_init(sk, skb);
-#endif /* CONFIG_TCP_ARGO */
 	skb->dev = NULL;
 
 	if (sk->sk_state == TCP_LISTEN) {

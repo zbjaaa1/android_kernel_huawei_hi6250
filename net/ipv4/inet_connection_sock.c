@@ -727,10 +727,6 @@ void inet_csk_destroy_sock(struct sock *sk)
         qtaguid_pid_remove(sk);
 #endif
 
-#ifdef CONFIG_TCP_ARGO
-	argo_deinit(sk);
-#endif /* CONFIG_TCP_ARGO */
-
 	sk->sk_prot->destroy(sk);
 
 	sk_stream_kill_queues(sk);

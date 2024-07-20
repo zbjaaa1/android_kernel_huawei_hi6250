@@ -5,6 +5,5 @@ menuconfig HUAWEI_EMCOM
     Say yes here to support emcom feature
 
 if HUAWEI_EMCOM
-source "drivers/huawei_platform/emcom/argo/Kconfig"
 source "drivers/huawei_platform/emcom/xengine/Kconfig"
 endif # if HUAWEI_EMCOM

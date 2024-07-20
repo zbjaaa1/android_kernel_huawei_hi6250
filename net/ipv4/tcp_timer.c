@@ -363,11 +363,6 @@ void tcp_delack_timer_handler(struct sock *sk)
 			icsk->icsk_ack.pingpong = 0;
 			icsk->icsk_ack.ato      = TCP_ATO_MIN;
 		}
-#ifdef CONFIG_TCP_ARGO
-		if (tp->argo && tp->argo->delay_ack_nums)
-			/* Delay ack timeout, disable argo. */
-			tp->argo->delay_ack_nums = 0;
-#endif /* CONFIG_TCP_ARGO */
 		tcp_send_ack(sk);
 		__NET_INC_STATS(sock_net(sk), LINUX_MIB_DELAYEDACKS);
 	}
