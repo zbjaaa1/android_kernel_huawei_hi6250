@@ -1,6 +1,3 @@
-#=============================================================================
-#=============================================================================
-
 obj-$(CONFIG_HW_ANTENNA_BOARD_MATCH)  += antenna_board_match/
 obj-$(CONFIG_ANTENNA_FPGA) += antenna_fpga/
 obj-$(CONFIG_HUAWEI_AUDIO) += audio/
@@ -40,7 +37,6 @@ obj-$(CONFIG_HW_LED_ALWAYSON) += led_alwayson/
 obj-$(CONFIG_HUAWEI_BOOT_TIME) += boottime/
 obj-y   += hw_led/
 obj-$(CONFIG_HUAWEI_EMCOM) += emcom/
-obj-$(CONFIG_HUAWEI_DTV_MMTUNER) += mm_tuner/
 obj-$(CONFIG_DP_AUX_SWITCH) += dp_aux_switch/
 obj-$(CONFIG_HW_DP_SOURCE) += dp_source/
 obj-$(CONFIG_HUAWEI_VENDOR_EXCEPTION) += vendor_exception/
