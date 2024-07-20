@@ -7,5 +7,4 @@ menuconfig HUAWEI_EMCOM
 if HUAWEI_EMCOM
 source "drivers/huawei_platform/emcom/argo/Kconfig"
 source "drivers/huawei_platform/emcom/xengine/Kconfig"
-source "drivers/huawei_platform/emcom/opmp/Kconfig"
 endif # if HUAWEI_EMCOM
