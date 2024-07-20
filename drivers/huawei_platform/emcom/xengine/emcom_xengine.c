@@ -26,7 +26,6 @@
 #include <net/sch_generic.h>
 #include "../emcom_netlink.h"
 #include "../emcom_utils.h"
-#include <huawei_platform/emcom/network_evaluation.h>
 #ifdef CONFIG_MPTCP
 #include <net/mptcp.h>
 #endif
