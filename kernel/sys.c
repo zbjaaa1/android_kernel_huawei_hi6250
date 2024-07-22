@@ -65,10 +65,6 @@
 #include <asm/io.h>
 #include <asm/unistd.h>
 
-#ifdef CONFIG_HW_IAWARE_THREAD_BOOST
-#include <cpu_netlink/cpu_netlink.h>
-#endif
-
 #ifdef CONFIG_HUAWEI_PROC_CHECK_ROOT
 #include <chipset_common/security/check_root.h>
 #endif
@@ -2338,9 +2334,6 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
 			return -EFAULT;
 		set_task_comm(me, comm);
 		proc_comm_connector(me);
-#ifdef CONFIG_HW_IAWARE_THREAD_BOOST
-		iaware_proc_comm_connector(me, comm);
-#endif
 		break;
 	case PR_GET_NAME:
 		get_task_comm(comm, me);

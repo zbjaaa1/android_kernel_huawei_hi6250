@@ -69,8 +69,7 @@
 #define NETLINK_NETBOOSTER  36
 #endif
 
-#if (defined(CONFIG_HW_CPULOAD_NOTI) || defined(CONFIG_HW_VIP_THREAD) \
-        || defined(CONFIG_HW_IAWARE_THREAD_BOOST))
+#if (defined(CONFIG_HW_CPULOAD_NOTI) || defined(CONFIG_HW_VIP_THREAD))
 #define NETLINK_HW_IAWARE_CPU 33
 #define MAX_LINKS 37
 #else
