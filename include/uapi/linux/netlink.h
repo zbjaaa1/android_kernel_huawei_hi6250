@@ -69,16 +69,12 @@
 #define NETLINK_NETBOOSTER  36
 #endif
 
-#ifdef CONFIG_HISI_CAMERA_VL53L0_970
-#define NETLINK_ST_LASER_DRIVER 37
-#endif
-
 #if (defined(CONFIG_HW_CPULOAD_NOTI) || defined(CONFIG_HW_VIP_THREAD) \
         || defined(CONFIG_HW_IAWARE_THREAD_BOOST))
 #define NETLINK_HW_IAWARE_CPU 33
-#define MAX_LINKS 38
+#define MAX_LINKS 37
 #else
-#define MAX_LINKS 38
+#define MAX_LINKS 37
 #endif
 
 struct sockaddr_nl {

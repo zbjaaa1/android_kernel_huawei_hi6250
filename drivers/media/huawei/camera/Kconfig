@@ -3,7 +3,6 @@ comment "Huawei Camera"
 # source "drivers/media/huawei/camera/isp/Kconfig"
 source "drivers/media/huawei/camera/hisp/Kconfig"
 source "drivers/media/huawei/camera/sensor/Kconfig"
-source "drivers/media/huawei/camera/laser/Kconfig"
 source "drivers/media/huawei/camera/fd/Kconfig"
 source "drivers/media/huawei/camera/pmic/Kconfig"
 
@@ -12,12 +11,6 @@ source "drivers/media/huawei/camera/platform/Kconfig"
 source "drivers/media/huawei/camera/fpga/Kconfig"
 source "drivers/media/huawei/camera/driver_ic/Kconfig"
 source "drivers/media/huawei/camera/dot/Kconfig"
-
-menuconfig HISI_CAMERA_LASER
-    bool "Huawei laser support"
-    default n
-    help
-        Say Y here to enable Laser for Huawei camera
 
 menuconfig HISI_CAMERA_FLASH
     bool "Huawei flash support"

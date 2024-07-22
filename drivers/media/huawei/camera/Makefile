@@ -15,7 +15,6 @@ obj-y += csi/
 obj-y += io/
 obj-y += pmic/
 obj-y += platform/
-obj-y += laser/
 obj-y += hjpeg/
 obj-y += clt/
 obj-y += fd/
