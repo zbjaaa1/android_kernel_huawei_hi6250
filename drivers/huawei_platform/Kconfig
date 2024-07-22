@@ -42,7 +42,6 @@ source "drivers/huawei_platform/boottime/Kconfig"
 source "drivers/huawei_platform/hw_led/Kconfig"
 source "drivers/huawei_platform/emcom/Kconfig"
 source "drivers/huawei_platform/vendor_exception/Kconfig"
-source "drivers/huawei_platform/hwaa/Kconfig"
 endif #HUAWEI_PLATFORM
 
 endmenu
