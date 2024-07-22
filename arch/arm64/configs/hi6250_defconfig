@@ -3421,7 +3421,6 @@ CONFIG_USB_STORAGE=y
 # CONFIG_USB_DWC3 is not set
 # CONFIG_USB_DWC2 is not set
 # CONFIG_USB_PROXY_HCD is not set
-# CONFIG_HISI_USB_TYPEC is not set
 # CONFIG_HISI_TCPC is not set
 # CONFIG_USB_CHIPIDEA is not set
 # CONFIG_USB_ISP1760 is not set
