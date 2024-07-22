@@ -62,7 +62,6 @@
 
 #include "huawei_platform/audio/usb_analog_hs_interface.h"
 #include "huawei_platform/audio/usb_audio_power.h"
-#include "huawei_platform/dp_aux_switch/dp_aux_switch.h"
 
 #include <linux/fb.h>
 #include <huawei_platform/usb/hw_usb.h>
@@ -138,9 +137,6 @@ void pd_dpm_set_cc_mode(int mode);
 HWLOG_REGIST();
 #endif
 
-#ifdef CONFIG_CONTEXTHUB_PD
-extern void dp_aux_uart_switch_disable(void);
-#endif
 static bool g_ignore_vbus_only_event = false;
 int g_cur_usb_event = PD_DPM_USB_TYPEC_NONE;
 static enum charger_event_type sink_source_type = STOP_SINK;
@@ -1229,10 +1225,6 @@ static inline void pd_dpm_report_host_detach(void)
 	event.mode_type = TCPC_NC;
 	pd_dpm_set_combphy_status(TCPC_NC);
 	pd_dpm_handle_combphy_event(event);
-	/*set aux uart switch low*/
-	if (support_dp) {
-		dp_aux_uart_switch_disable();
-	}
 #else
 	hisi_usb_otg_event(ID_RISE_EVENT);
 #endif

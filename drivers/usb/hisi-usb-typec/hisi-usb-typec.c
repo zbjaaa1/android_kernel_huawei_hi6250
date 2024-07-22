@@ -29,7 +29,6 @@
 #include <huawei_platform/audio/usb_analog_hs_interface.h>
 #include <huawei_platform/power/boost_5v.h>
 #include <huawei_platform/audio/usb_audio_power.h>
-#include <huawei_platform/dp_aux_switch/dp_aux_switch.h>
 
 #include <linux/hisi/usb/hisi_hifi_usb.h>
 #include <linux/hisi/contexthub/tca.h>
@@ -592,12 +591,6 @@ void hisi_usb_pd_dp_state_change(struct tcp_ny_ama_dp_state *ama_dp_state)
 	D("%u %u 0x%x %u %u\n", ama_dp_state->sel_config, ama_dp_state->signal,
 			ama_dp_state->pin_assignment, ama_dp_state->polarity,
 			ama_dp_state->active);
-
-	/* add aux switch */
-	dp_aux_switch_op(ama_dp_state->polarity);
-
-	/* add aux uart switch*/
-	dp_aux_uart_switch_enable();
 
 #ifndef MODE_DP_PIN_A
 #define MODE_DP_PIN_A 0x01

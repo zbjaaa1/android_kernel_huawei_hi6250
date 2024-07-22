@@ -27,7 +27,6 @@
 #endif
 #include <huawei_platform/usb/pd/richtek/tcpm.h>
 #include <huawei_platform/power/huawei_charger.h>
-#include "huawei_platform/dp_aux_switch/dp_aux_switch.h"
 #include <huawei_platform/usb/hw_usb.h>
 
 #ifdef CONFIG_POGO_PIN

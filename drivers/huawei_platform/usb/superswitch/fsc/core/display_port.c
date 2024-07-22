@@ -25,7 +25,6 @@
 #include <linux/hisi/contexthub/tca.h>
 #include <huawei_platform/usb/hw_pd_dev.h>
 #include <huawei_platform/log/hw_log.h>
-#include <huawei_platform/dp_aux_switch/dp_aux_switch.h>
 
 #define HWLOG_TAG FUSB3601_TAG
 HWLOG_REGIST();
@@ -33,14 +32,7 @@ HWLOG_REGIST();
 #define OUT_FUNCTION hwlog_info("%s --\n", __func__);
 static TCPC_MUX_CTRL_TYPE g_mux_type = TCPC_DP;
 
-#ifdef CONFIG_CONTEXTHUB_PD
-extern void dp_aux_switch_op(uint32_t value);
-extern void dp_aux_uart_switch_enable(void);
-extern int pd_dpm_handle_combphy_event(struct pd_dpm_combphy_event event);
-extern void pd_dpm_set_last_hpd_status(bool hpd_status);
-#endif
 void pd_dpm_send_event(enum pd_dpm_cable_event_type event);
-
 
 #define MODE_DP_SNK 0x1
 #define MODE_DP_SRC 0x2
@@ -512,8 +504,6 @@ void FUSB3601_informConfigResult(struct Port *port, FSC_BOOL success)
 
 		#ifdef CONFIG_CONTEXTHUB_PD
 		fsc_polarity = port->registers_.TcpcCtrl.ORIENT;
-		dp_aux_switch_op(fsc_polarity);
-		dp_aux_uart_switch_enable();
 
 		if (channel_type == channel_superswitch) {
 			if(!fsc_polarity) {
