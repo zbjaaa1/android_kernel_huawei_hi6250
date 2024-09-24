@@ -1,1 +1,1 @@
-# android_kernel_huawei_hi6250
+# android_kernel_huawei_hi3650
