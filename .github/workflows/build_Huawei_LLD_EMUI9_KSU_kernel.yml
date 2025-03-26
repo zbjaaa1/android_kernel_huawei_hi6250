@@ -49,9 +49,9 @@ jobs:
         echo "No Config,good."
        fi
 
-       rm -rf KernelSU
-       rm -rf drivers/kernelsu
-       curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s v0.9.5
+       rm -rf KernelSU-Next
+       rm -rf drivers/KernelSU-Next
+       curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash
        export PATH=$(pwd)/ToolChains/bin/:$PATH
        export ARCH=arm64
        export SUBARCH=arm64
